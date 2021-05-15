@@ -4,14 +4,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
+import androidx.room.Room
 import com.example.googlemaps.dataBaseApi.model.RoadItem
+import com.example.googlemaps.event.fragments.EventFragment
 import com.example.googlemaps.mainMap.fragments.MainMapFragment
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.Marker
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.collections.ArrayList
+
 
 class MainActivity : AppCompatActivity(), OnNavigationListener {
 
@@ -19,16 +21,15 @@ class MainActivity : AppCompatActivity(), OnNavigationListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-        //mapFragment?.getMapAsync(this)
-
         navigateTo(MainMapFragment())
 
         bottom_navigation.setOnNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.navigation_home -> {
+                    navigateTo(MainMapFragment())
                 }
                 R.id.navigation_events -> {
+                    navigateTo(EventFragment())
                 }
                 R.id.navigation_profile ->{
 
@@ -48,8 +49,10 @@ class MainActivity : AppCompatActivity(), OnNavigationListener {
         bottom_navigation.selectedItemId = tabId
         when(tabId){
             R.id.navigation_home -> {
+                navigateTo(MainMapFragment())
             }
             R.id.navigation_events -> {
+                navigateTo(EventFragment())
             }
             R.id.navigation_profile ->{
 
@@ -60,8 +63,10 @@ class MainActivity : AppCompatActivity(), OnNavigationListener {
     override fun selectTab(tabId: Int, road: RoadItem) {
         when(tabId){
             R.id.navigation_home -> {
+                navigateTo(MainMapFragment())
             }
             R.id.navigation_events -> {
+                navigateTo(EventFragment())
             }
             R.id.navigation_profile ->{
 

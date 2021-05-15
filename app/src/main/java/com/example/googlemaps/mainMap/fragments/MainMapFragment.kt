@@ -35,6 +35,7 @@ import kotlin.math.log
 class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback, SaveRoadDialogListener, MainMapView {
 
     private val presenter by moxyPresenter { MainMapPresenter() }
+
     private var saveRoadDialogFragment = SaveRoadDialogFragment.newInstance(this)
 
     private var map: GoogleMap? = null
@@ -42,18 +43,14 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
 
     private val defaultLocation = LatLng(44.41824719212245, 38.207623176276684)
 
-    private var roadOpened: RoadItem? = null
-
     private var locationPermissionGranted = false
 
     private var lastKnownLocation: Location? = null
 
-    private var markers: LinkedList<Marker> = LinkedList()
     private var line: Polyline? = null
 
     constructor(road: RoadItem): this(){
-        roadOpened = road
-        markers = road.markerList
+        presenter.markers = road.markerList
 
     }
 
@@ -68,18 +65,19 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         var view = inflater.inflate(R.layout.fragment_main_map, container, false)
+
         val mapFragment = childFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
 
         view.button.setOnClickListener {
-            markers.forEach {
+            presenter.markers.forEach {
                 Log.e("gaf", it.position.toString())
             }
         }
 
         view.create_transit_button.setOnClickListener {
-            presenter.showPoly(markers)
+            presenter.showPoly(presenter.markers)
         }
 
         view.save_transit_button.setOnClickListener {
@@ -111,24 +109,24 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
     override fun onMapReady(p0: GoogleMap) {
         this.map = p0
 
-        if (!markers.isEmpty()) {
-            markers.forEach {
+
+        if (!presenter.markers.isEmpty()) {
+            presenter.markers.forEach {
                 map?.addMarker(MarkerOptions().position(it.position))
                 disableAllButtons()
             }
-            showPolyLines(markers)
+            showPolyLines(presenter.markers)
 
         } else {
-
             map?.setOnMapClickListener {
                 var marker = map?.addMarker(MarkerOptions().position(it))
-                markers.add(marker!!)
+                presenter.markers.add(marker!!)
                 Log.e("gaf", marker.position.toString())
             }
 
             map?.setOnMarkerClickListener {
                 it.remove()
-                markers.remove(it)
+                presenter.markers.remove(it)
 
                 if (line != null) {
                     line?.remove()
@@ -204,7 +202,6 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
         private const val KEY_CAMERA_POSITION = "camera_position"
         private const val KEY_LOCATION = "location"
     }
-
 
     override fun showPolyLines(list: LinkedList<Marker>) {
         if (line != null){

@@ -17,7 +17,7 @@ class MainMapPresenter(): MvpPresenter<MainMapView>() {
     }
 
     fun save(roadName: String){
-        var roadItem: RoadItem = RoadItem(roadName, markers)
+
     }
 
 
