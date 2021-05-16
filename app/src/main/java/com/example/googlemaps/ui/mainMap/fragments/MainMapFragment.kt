@@ -1,4 +1,4 @@
-package com.example.googlemaps.mainMap.fragments
+package com.example.googlemaps.ui.mainMap.fragments
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -12,25 +12,23 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.googlemaps.MainActivity
+import com.example.googlemaps.ui.main.MainActivity
 import com.example.googlemaps.R
 import com.example.googlemaps.dataBaseApi.model.RoadItem
-import com.example.googlemaps.mainMap.dialogs.SaveRoadDialogFragment
-import com.example.googlemaps.mainMap.presenters.MainMapPresenter
-import com.example.googlemaps.mainMap.view.MainMapView
-import com.example.googlemaps.mainMap.view.SaveRoadDialogListener
+import com.example.googlemaps.ui.mainMap.dialogs.SaveRoadDialogFragment
+import com.example.googlemaps.ui.mainMap.presenters.MainMapPresenter
+import com.example.googlemaps.ui.mainMap.view.MainMapView
+import com.example.googlemaps.ui.mainMap.view.SaveRoadDialogListener
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import kotlinx.android.synthetic.main.fragment_main_map.*
 import kotlinx.android.synthetic.main.fragment_main_map.view.*
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import java.util.*
-import kotlin.math.log
 
 class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback, SaveRoadDialogListener, MainMapView {
 

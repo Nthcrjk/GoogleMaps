@@ -1,7 +1,6 @@
-package com.example.googlemaps.mainMap.dialogs
+package com.example.googlemaps.ui.mainMap.dialogs
 
 
-import android.Manifest
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -13,7 +12,7 @@ import android.view.Window
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.example.googlemaps.R
-import com.example.googlemaps.mainMap.view.SaveRoadDialogListener
+import com.example.googlemaps.ui.mainMap.view.SaveRoadDialogListener
 
 import kotlinx.android.synthetic.main.dialog_road_fragment.view.*
 

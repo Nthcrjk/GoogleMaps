@@ -1,4 +1,4 @@
-package com.example.googlemaps.mainMap.view
+package com.example.googlemaps.ui.mainMap.view
 
 interface SaveRoadDialogListener {
     fun saveRoad(roadName: String)

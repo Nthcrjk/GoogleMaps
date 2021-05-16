@@ -1,4 +1,4 @@
-package com.example.googlemaps.mainMap.view
+package com.example.googlemaps.ui.mainMap.view
 
 import com.google.android.gms.maps.model.Marker
 import moxy.MvpView

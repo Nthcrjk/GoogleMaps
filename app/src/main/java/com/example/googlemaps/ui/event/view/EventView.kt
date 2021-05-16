@@ -1,4 +1,4 @@
-package com.example.googlemaps.event.view
+package com.example.googlemaps.ui.event.view
 
 import moxy.MvpView
 import moxy.viewstate.strategy.alias.AddToEndSingle

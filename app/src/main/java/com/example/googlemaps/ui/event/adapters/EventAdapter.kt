@@ -1,4 +1,4 @@
-package com.example.googlemaps.event.adapters
+package com.example.googlemaps.ui.event.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.googlemaps.OnNavigationListener
 import com.example.googlemaps.R
 import com.example.googlemaps.dataBaseApi.model.RoadItem
-import com.example.googlemaps.event.view.EventAdapterListener
+import com.example.googlemaps.ui.event.view.EventAdapterListener
+import com.example.googlemaps.interfaces.BottomNavigationListener
 import kotlinx.android.synthetic.main.road_item.view.*
 import java.util.*
 
@@ -30,7 +30,7 @@ class EventAdapter(listener: EventAdapterListener, states: LinkedList<RoadItem>)
         val state = states[position]
         holder.nameOfEvent.text = state.name
         holder.itemView.setOnClickListener {
-            (context as OnNavigationListener).selectTab(R.id.navigation_home, state)
+            (context as BottomNavigationListener).selectTab(R.id.navigation_home, state)
         }
         holder.deleteIcon.setOnClickListener {
             states.remove(state)
