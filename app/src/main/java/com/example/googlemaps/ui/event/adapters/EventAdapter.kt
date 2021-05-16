@@ -8,13 +8,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.googlemaps.R
-import com.example.googlemaps.dataBaseApi.model.RoadItem
+import com.example.googlemaps.firebase.model.RoadItem
 import com.example.googlemaps.ui.event.view.EventAdapterListener
 import com.example.googlemaps.interfaces.BottomNavigationListener
 import kotlinx.android.synthetic.main.road_item.view.*
 import java.util.*
+import kotlin.collections.ArrayList
 
-class EventAdapter(listener: EventAdapterListener, states: LinkedList<RoadItem>): RecyclerView.Adapter<EventAdapter.ViewHolder>() {
+class EventAdapter(listener: EventAdapterListener, states: ArrayList<RoadItem>): RecyclerView.Adapter<EventAdapter.ViewHolder>() {
 
     private var states = states
     private val listener: EventAdapterListener = listener
@@ -33,8 +34,7 @@ class EventAdapter(listener: EventAdapterListener, states: LinkedList<RoadItem>)
             (context as BottomNavigationListener).selectTab(R.id.navigation_home, state)
         }
         holder.deleteIcon.setOnClickListener {
-            states.remove(state)
-            notifyDataSetChanged()
+
         }
     }
 

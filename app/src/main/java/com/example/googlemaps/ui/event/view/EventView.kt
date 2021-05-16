@@ -5,5 +5,5 @@ import moxy.viewstate.strategy.alias.AddToEndSingle
 
 @AddToEndSingle
 interface EventView: MvpView {
-
+    fun setAdapter()
 }

@@ -14,7 +14,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.googlemaps.ui.main.MainActivity
 import com.example.googlemaps.R
-import com.example.googlemaps.dataBaseApi.model.RoadItem
+import com.example.googlemaps.firebase.model.RoadItem
 import com.example.googlemaps.ui.mainMap.dialogs.SaveRoadDialogFragment
 import com.example.googlemaps.ui.mainMap.presenters.MainMapPresenter
 import com.example.googlemaps.ui.mainMap.view.MainMapView
@@ -29,6 +29,7 @@ import kotlinx.android.synthetic.main.fragment_main_map.view.*
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import java.util.*
+import kotlin.collections.ArrayList
 
 class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback, SaveRoadDialogListener, MainMapView {
 
@@ -45,6 +46,11 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
 
     private var lastKnownLocation: Location? = null
 
+    private var roadItem: RoadItem? = null
+
+    constructor(roadItem: RoadItem) : this() {
+        this.roadItem = roadItem
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +66,14 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
 
         view.create_transit_button.setOnClickListener {
             presenter.showPoly()
+        }
+
+        view.save_transit_button.setOnClickListener {
+            if (presenter.line == null){
+                Toast.makeText(context, "Маршрут не построен", Toast.LENGTH_LONG).show()
+            } else {
+                saveRoadDialogFragment.show(childFragmentManager, SaveRoadDialogFragment.TAG)
+            }
         }
 
         val mapFragment = childFragmentManager
@@ -100,9 +114,21 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
             true
         }
 
+        loadRoad()
+
         getLocationPermission()
         updateLocationUI()
         getDeviceLocation()
+    }
+
+    private fun loadRoad(){
+        if (roadItem != null) {
+            roadItem?.markerList?.forEach {
+                var item = map?.addMarker(MarkerOptions().position(LatLng(it.point1, it.point2)))
+                presenter.markers.add(item!!)
+            }
+        }
+        presenter.showPoly()
     }
 
     private fun getDeviceLocation() {
@@ -168,7 +194,7 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
         private const val KEY_LOCATION = "location"
     }
 
-    override fun showPolyLines(list: LinkedList<Marker>) {
+    override fun showPolyLines(list: ArrayList<Marker>) {
         val poly = PolylineOptions().width(5f).color(Color.BLUE).geodesic(true)
         list.forEach {
             poly.add(it.position)
@@ -182,6 +208,6 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
     }
 
     override fun saveRoad(roadName: String) {
-        presenter.save(roadName)
+        presenter.saveRoad(roadName)
     }
 }

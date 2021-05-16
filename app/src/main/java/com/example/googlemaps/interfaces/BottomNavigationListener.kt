@@ -1,6 +1,6 @@
 package com.example.googlemaps.interfaces
 
-import com.example.googlemaps.dataBaseApi.model.RoadItem
+import com.example.googlemaps.firebase.model.RoadItem
 
 interface BottomNavigationListener {
     fun selectTab(tabId: Int)

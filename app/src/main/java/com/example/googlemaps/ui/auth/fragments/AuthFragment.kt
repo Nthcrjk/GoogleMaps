@@ -43,7 +43,6 @@ class AuthFragment() : Fragment() {
                         view.login_edit_text.text.toString(),
                         view.password_edit_text.text.toString()
                     ).addOnFailureListener {
-                        Log.e("gaf", "sdsd" + it.message)
                         Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                     }.addOnCompleteListener {
                     if (it.isSuccessful) {
