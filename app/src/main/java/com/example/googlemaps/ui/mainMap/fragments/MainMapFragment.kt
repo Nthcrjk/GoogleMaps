@@ -45,12 +45,6 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
 
     private var lastKnownLocation: Location? = null
 
-    private var line: Polyline? = null
-
-    constructor(road: RoadItem): this(){
-        presenter.markers = road.markerList
-
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,27 +58,13 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
                               savedInstanceState: Bundle?): View? {
         var view = inflater.inflate(R.layout.fragment_main_map, container, false)
 
+        view.create_transit_button.setOnClickListener {
+            presenter.showPoly()
+        }
+
         val mapFragment = childFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
-
-        view.button.setOnClickListener {
-            presenter.markers.forEach {
-                Log.e("gaf", it.position.toString())
-            }
-        }
-
-        view.create_transit_button.setOnClickListener {
-            presenter.showPoly(presenter.markers)
-        }
-
-        view.save_transit_button.setOnClickListener {
-            if (presenter.markers.isEmpty()){
-                Toast.makeText(context, "Маршрут не построен!", Toast.LENGTH_LONG).show()
-            } else{
-                saveRoadDialogFragment.show(childFragmentManager, SaveRoadDialogFragment.TAG)
-            }
-        }
         return view
     }
 
@@ -96,7 +76,7 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
         super.onSaveInstanceState(outState)
     }
 
-    fun disableAllButtons(){
+    override fun disableAllButtons(){
         view?.save_transit_button?.visibility = View.GONE
         view?.save_transit_button?.isEnabled = false
 
@@ -107,32 +87,19 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
     override fun onMapReady(p0: GoogleMap) {
         this.map = p0
 
-
-        if (!presenter.markers.isEmpty()) {
-            presenter.markers.forEach {
-                map?.addMarker(MarkerOptions().position(it.position))
-                disableAllButtons()
-            }
-            showPolyLines(presenter.markers)
-
-        } else {
-            map?.setOnMapClickListener {
-                var marker = map?.addMarker(MarkerOptions().position(it))
-                presenter.markers.add(marker!!)
-                Log.e("gaf", marker.position.toString())
-            }
-
-            map?.setOnMarkerClickListener {
-                it.remove()
-                presenter.markers.remove(it)
-
-                if (line != null) {
-                    line?.remove()
-                }
-                presenter.showPoly(LinkedList())
-                true
-            }
+        map?.setOnMapClickListener {
+            var marker = map?.addMarker(MarkerOptions().position(it))
+            presenter.markers.add(marker!!)
+            presenter.hidePoly()
         }
+
+        map?.setOnMarkerClickListener {
+            presenter.markers.remove(it)
+            it.remove()
+            presenter.hidePoly()
+            true
+        }
+
         getLocationPermission()
         updateLocationUI()
         getDeviceLocation()
@@ -202,14 +169,16 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
     }
 
     override fun showPolyLines(list: LinkedList<Marker>) {
-        if (line != null){
-            line?.remove()
-        }
         val poly = PolylineOptions().width(5f).color(Color.BLUE).geodesic(true)
         list.forEach {
             poly.add(it.position)
         }
-        line = map?.addPolyline(poly)
+        presenter.line = map?.addPolyline(poly)
+    }
+
+    override fun hidePolyLines() {
+        presenter.line?.remove()
+        presenter.line = null
     }
 
     override fun saveRoad(roadName: String) {

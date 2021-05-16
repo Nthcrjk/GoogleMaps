@@ -22,8 +22,6 @@ class AuthActivity : AppCompatActivity(), OnNavigationListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auth)
-
-        mAuth.signOut()
     }
 
     override fun onStart() {
@@ -31,7 +29,7 @@ class AuthActivity : AppCompatActivity(), OnNavigationListener {
         val currentUser: FirebaseUser? = mAuth.currentUser
         if (currentUser == null){
             Toast.makeText(this, "user null", Toast.LENGTH_SHORT).show()
-            navigateTo(AuthFragment(mAuth), false)
+            navigateTo(AuthFragment(), false)
         } else {
             val intent: Intent = Intent(this, MainActivity::class.java)
             startActivity(intent)

@@ -11,19 +11,18 @@ import com.example.googlemaps.dataBaseApi.model.RoadItem
 import com.example.googlemaps.firebase.model.User
 import com.example.googlemaps.ui.event.fragments.EventFragment
 import com.example.googlemaps.ui.mainMap.fragments.MainMapFragment
+import com.example.googlemaps.ui.profile.fragments.ProfileFragment
+import com.example.googlemaps.ui.profile.presenters.ProfilePresenter
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity(user: User?) : AppCompatActivity(), OnNavigationListener, BottomNavigationListener {
-
-    private val user: User? = user
+class MainActivity() : AppCompatActivity(), OnNavigationListener, BottomNavigationListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Toast.makeText(this, FirebaseAuth.getInstance().currentUser?.email, Toast.LENGTH_SHORT).show()
         navigateTo(MainMapFragment(), false)
 
         bottom_navigation.setOnNavigationItemSelectedListener {
@@ -35,7 +34,7 @@ class MainActivity(user: User?) : AppCompatActivity(), OnNavigationListener, Bot
                     navigateTo(EventFragment(), false)
                 }
                 R.id.navigation_profile ->{
-
+                    navigateTo(ProfileFragment(), false)
                 }
             }
             true
@@ -79,5 +78,4 @@ class MainActivity(user: User?) : AppCompatActivity(), OnNavigationListener, Bot
             }
         }
     }
-
 }

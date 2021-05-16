@@ -8,4 +8,6 @@ import java.util.*
 @AddToEndSingle
 interface MainMapView: MvpView {
     fun showPolyLines(list: LinkedList<Marker>)
+    fun hidePolyLines()
+    fun disableAllButtons()
 }

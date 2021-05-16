@@ -14,9 +14,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.fragment_registration.view.*
 
-class RegistrationFragment(mAuth: FirebaseAuth) : Fragment() {
+class RegistrationFragment() : Fragment() {
 
-    private val mAuth = mAuth
+    private val mAuth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +28,7 @@ class RegistrationFragment(mAuth: FirebaseAuth) : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_registration, container, false)
         view.to_login_in_button.setOnClickListener {
-            (context as OnNavigationListener).navigateTo(AuthFragment(mAuth), true)
+            (context as OnNavigationListener).navigateTo(AuthFragment(), true)
         }
         view.sign_up_button.setOnClickListener {
             if (view.login_edit_text.text.toString().isNotEmpty() && view.password_edit_text.text.toString().isNotEmpty() && view.name_edit_text.text.toString().isNotEmpty()){
@@ -46,7 +46,6 @@ class RegistrationFragment(mAuth: FirebaseAuth) : Fragment() {
                 }
             }
         }
-
         return view
     }
 

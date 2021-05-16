@@ -1,5 +1,6 @@
 package com.example.googlemaps.ui.auth.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,6 +10,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.example.googlemaps.R
 import com.example.googlemaps.interfaces.OnNavigationListener
+import com.example.googlemaps.ui.auth.activity.AuthActivity
+import com.example.googlemaps.ui.main.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseUser
@@ -18,9 +21,9 @@ import kotlinx.android.synthetic.main.fragment_auth.view.password_edit_text
 import kotlinx.android.synthetic.main.fragment_registration.view.*
 import java.lang.Exception
 
-class AuthFragment(mAuth: FirebaseAuth) : Fragment() {
+class AuthFragment() : Fragment() {
 
-    private val mAuth: FirebaseAuth = mAuth
+    private val mAuth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,12 +35,10 @@ class AuthFragment(mAuth: FirebaseAuth) : Fragment() {
     ): View? {
         var view = inflater.inflate(R.layout.fragment_auth, container, false)
         view.to_registration_button.setOnClickListener {
-            (context as OnNavigationListener).navigateTo(RegistrationFragment(mAuth), true)
+            (context as OnNavigationListener).navigateTo(RegistrationFragment(), true)
         }
         view.auth_button.setOnClickListener {
             if (view.login_edit_text.text.toString().isNotEmpty() && view.password_edit_text.text.toString().isNotEmpty()){
-
-                try {
                     mAuth.signInWithEmailAndPassword(
                         view.login_edit_text.text.toString(),
                         view.password_edit_text.text.toString()
@@ -45,16 +46,19 @@ class AuthFragment(mAuth: FirebaseAuth) : Fragment() {
                         Log.e("gaf", "sdsd" + it.message)
                         Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                     }.addOnCompleteListener {
-                        if (it.isSuccessful) {
-                            Toast.makeText(context, "Success!!!", Toast.LENGTH_SHORT).show()
-                        } else {
-                            Toast.makeText(context, it.result.toString(), Toast.LENGTH_LONG).show()
-                        }
+                    if (it.isSuccessful) {
+                        Toast.makeText(context, "Success!!!", Toast.LENGTH_SHORT).show()
+                        val intent: Intent = Intent((context as AuthActivity), MainActivity::class.java)
+                        startActivity(intent)
+                    } else {
+                        Toast.makeText(context, it.result.toString(), Toast.LENGTH_LONG).show()
                     }
-                } catch (e: FirebaseAuthInvalidCredentialsException){
-
                 }
             }
+        }
+        view.sign_in_like_guest.setOnClickListener {
+            val intent: Intent = Intent((context as AuthActivity), MainActivity::class.java)
+            startActivity(intent)
         }
         return view
     }
