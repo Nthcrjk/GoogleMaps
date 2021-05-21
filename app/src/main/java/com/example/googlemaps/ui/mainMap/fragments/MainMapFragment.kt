@@ -114,6 +114,7 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
             true
         }
 
+
         loadRoad()
 
         getLocationPermission()
@@ -195,6 +196,7 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
     }
 
     override fun showPolyLines(list: ArrayList<Marker>) {
+        presenter.hidePoly()
         val poly = PolylineOptions().width(5f).color(Color.BLUE).geodesic(true)
         list.forEach {
             poly.add(it.position)

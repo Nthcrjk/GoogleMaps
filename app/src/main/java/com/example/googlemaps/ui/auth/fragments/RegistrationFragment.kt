@@ -32,7 +32,6 @@ class RegistrationFragment() : Fragment() {
         }
         view.sign_up_button.setOnClickListener {
             if (view.login_edit_text.text.toString().isNotEmpty() && view.password_edit_text.text.toString().isNotEmpty() && view.name_edit_text.text.toString().isNotEmpty()){
-                Toast.makeText(context, "Success!!!", Toast.LENGTH_SHORT).show()
                 val mail: String = view.login_edit_text.text.toString()
                 val password: String = view.password_edit_text.text.toString()
                 val name: String = view.name_edit_text.text.toString()
@@ -40,9 +39,9 @@ class RegistrationFragment() : Fragment() {
                     if (it.isSuccessful){
                         Toast.makeText(context, "Success!!!", Toast.LENGTH_SHORT).show()
                         FirebaseDatabase.getInstance().getReference(mAuth.uid.toString()).push().setValue(User(name, mail, password))
-                    } else {
-                        Log.e("Registration", it.result.toString())
                     }
+                }.addOnFailureListener {
+                    Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                 }
             }
         }

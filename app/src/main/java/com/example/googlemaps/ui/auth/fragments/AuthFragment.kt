@@ -12,6 +12,7 @@ import com.example.googlemaps.R
 import com.example.googlemaps.interfaces.OnNavigationListener
 import com.example.googlemaps.ui.auth.activity.AuthActivity
 import com.example.googlemaps.ui.main.MainActivity
+import com.google.android.gms.tasks.RuntimeExecutionException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseUser
@@ -19,7 +20,6 @@ import kotlinx.android.synthetic.main.fragment_auth.view.*
 import kotlinx.android.synthetic.main.fragment_auth.view.login_edit_text
 import kotlinx.android.synthetic.main.fragment_auth.view.password_edit_text
 import kotlinx.android.synthetic.main.fragment_registration.view.*
-import java.lang.Exception
 
 class AuthFragment() : Fragment() {
 
@@ -46,13 +46,13 @@ class AuthFragment() : Fragment() {
                         Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                     }.addOnCompleteListener {
                     if (it.isSuccessful) {
-                        Toast.makeText(context, "Success!!!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Success!!!", Toast.LENGTH_LONG).show()
                         val intent: Intent = Intent((context as AuthActivity), MainActivity::class.java)
                         startActivity(intent)
-                    } else {
-                        Toast.makeText(context, it.result.toString(), Toast.LENGTH_LONG).show()
                     }
                 }
+            } else {
+                Toast.makeText(context, "Email or password is empty", Toast.LENGTH_LONG).show()
             }
         }
         view.sign_in_like_guest.setOnClickListener {
