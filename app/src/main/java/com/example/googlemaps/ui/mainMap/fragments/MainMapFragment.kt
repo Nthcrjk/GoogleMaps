@@ -14,9 +14,12 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.googlemaps.ui.main.MainActivity
 import com.example.googlemaps.R
+import com.example.googlemaps.firebase.model.Date
 import com.example.googlemaps.firebase.model.RoadItem
+import com.example.googlemaps.firebase.model.Time
 import com.example.googlemaps.ui.mainMap.dialogs.SaveRoadDialogFragment
 import com.example.googlemaps.ui.mainMap.presenters.MainMapPresenter
+import com.example.googlemaps.ui.mainMap.view.BeautyTimePickerDialogListener
 import com.example.googlemaps.ui.mainMap.view.MainMapView
 import com.example.googlemaps.ui.mainMap.view.SaveRoadDialogListener
 
@@ -31,22 +34,23 @@ import moxy.ktx.moxyPresenter
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback, SaveRoadDialogListener, MainMapView {
+class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback, MainMapView {
 
     private val presenter by moxyPresenter { MainMapPresenter() }
-
-    private var saveRoadDialogFragment = SaveRoadDialogFragment.newInstance(this)
-
     private var map: GoogleMap? = null
     private var cameraPosition: CameraPosition? = null
-
     private val defaultLocation = LatLng(44.41824719212245, 38.207623176276684)
-
     private var locationPermissionGranted = false
-
     private var lastKnownLocation: Location? = null
-
     private var roadItem: RoadItem? = null
+
+    private var beautyListener = object : BeautyTimePickerDialogListener {
+        override fun saveRoad(name: String, date: Date, time: Time) {
+            presenter.saveRoad(name, date, time)
+        }
+    }
+
+    private var saveRoadDialogFragment = SaveRoadDialogFragment.newInstance(beautyListener)
 
     constructor(roadItem: RoadItem) : this() {
         this.roadItem = roadItem
@@ -209,7 +213,4 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
         presenter.line = null
     }
 
-    override fun saveRoad(roadName: String) {
-        presenter.saveRoad(roadName)
-    }
 }

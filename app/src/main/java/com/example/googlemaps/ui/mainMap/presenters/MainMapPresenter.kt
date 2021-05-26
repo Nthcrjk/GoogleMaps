@@ -1,14 +1,15 @@
 package com.example.googlemaps.ui.mainMap.presenters
 
 
+import com.example.googlemaps.firebase.model.Date
 import com.example.googlemaps.firebase.model.RoadItem
+import com.example.googlemaps.firebase.model.Time
 import com.example.googlemaps.firebase.model.User
 import com.example.googlemaps.ui.mainMap.view.MainMapView
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.Polyline
 import com.google.firebase.database.FirebaseDatabase
 import moxy.MvpPresenter
-import java.util.*
 import kotlin.collections.ArrayList
 
 class MainMapPresenter(): MvpPresenter<MainMapView>() {
@@ -19,16 +20,12 @@ class MainMapPresenter(): MvpPresenter<MainMapView>() {
 
     val ROAD: String = "road"
 
-    override fun onFirstViewAttach() {
-
-    }
-
-    fun saveRoad(roadName: String){
+    fun saveRoad(roadName: String, date: Date, time: Time){
         var modelMarkers: ArrayList<com.example.googlemaps.firebase.model.Marker> = ArrayList(markers.size)
         markers.forEach {
             modelMarkers.add(com.example.googlemaps.firebase.model.Marker(it.position.latitude, it.position.longitude))
         }
-        val item: RoadItem = RoadItem(roadName, modelMarkers)
+        val item: RoadItem = RoadItem(roadName, modelMarkers, date, time)
         FirebaseDatabase.getInstance().getReference(ROAD).push().setValue(item)
     }
 

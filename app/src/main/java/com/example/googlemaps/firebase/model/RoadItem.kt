@@ -4,7 +4,9 @@ import kotlin.collections.ArrayList
 
 data class RoadItem(
     var name: String = "",
-    var markerList: ArrayList<Marker> = ArrayList()
+    var markerList: ArrayList<Marker> = ArrayList(),
+    var date: Date = Date(),
+    var time: Time = Time()
 )
 
 data class Marker(

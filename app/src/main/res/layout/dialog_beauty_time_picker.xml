@@ -26,18 +26,12 @@
             android:orientation="vertical"
             app:layout_constraintTop_toTopOf="parent">
 
-            <EditText
-                android:id="@+id/road_name_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name" />
+            <TimePicker
+                android:id="@+id/time_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
 
-            <CalendarView
-                android:id="@+id/calendar_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+            </TimePicker>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -56,7 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Далее" />
+                    android:text="Сохранить" />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

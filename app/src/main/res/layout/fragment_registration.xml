@@ -60,6 +60,14 @@
         app:layout_constraintTop_toBottomOf="@+id/login_edit_text"
         app:layout_constraintVertical_bias="0.085" />
 
+    <CheckBox
+        android:id="@+id/is_org"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CheckBox"
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_button"
+        tools:layout_editor_absoluteX="140dp" />
+
     <Button
         android:id="@+id/to_login_in_button"
         android:layout_width="wrap_content"
@@ -96,5 +104,23 @@
         android:text="Имя"
         app:layout_constraintBottom_toTopOf="@+id/name_edit_text"
         app:layout_constraintStart_toStartOf="@+id/name_edit_text" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Фамилия"
+        app:layout_constraintBottom_toTopOf="@+id/secondName_edit_text"
+        app:layout_constraintStart_toStartOf="@+id/secondName_edit_text" />
+
+    <EditText
+        android:id="@+id/secondName_edit_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="52dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintTop_toBottomOf="@+id/checkBox"
+        tools:layout_editor_absoluteX="99dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

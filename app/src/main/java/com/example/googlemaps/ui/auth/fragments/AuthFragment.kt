@@ -55,10 +55,6 @@ class AuthFragment() : Fragment() {
                 Toast.makeText(context, "Email or password is empty", Toast.LENGTH_LONG).show()
             }
         }
-        view.sign_in_like_guest.setOnClickListener {
-            val intent: Intent = Intent((context as AuthActivity), MainActivity::class.java)
-            startActivity(intent)
-        }
         return view
     }
 

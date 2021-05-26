@@ -2,11 +2,11 @@ package com.example.googlemaps.ui.profile.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.googlemaps.R
+import com.example.googlemaps.firebase.model.User
 import com.example.googlemaps.ui.auth.activity.AuthActivity
 import com.example.googlemaps.ui.main.MainActivity
 import com.example.googlemaps.ui.profile.presenters.ProfilePresenter
@@ -29,25 +29,27 @@ class ProfileFragment : MvpAppCompatFragment(), ProfileView {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
-        view.button2.setOnClickListener {
+        view.sign_out_btn.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
             val intent: Intent = Intent((context as MainActivity), AuthActivity::class.java)
             startActivity(intent)
         }
+
+        presenter.getDataFromDB()
+
         return view
     }
 
-    override fun showOrHideViews(hide: Boolean) {
-        if (hide){
-            view?.textView2?.visibility = View.GONE
-            view?.textView3?.visibility = View.GONE
-            view?.button2?.visibility = View.GONE
-            view?.textView4?.visibility = View.VISIBLE
+
+    override fun setUsersFields(user: User) {
+        view?.name?.text = user.name
+        view?.second_name?.text = user.secondName
+
+        if (user.isOrg){
+            view?.role?.text = "Org"
         } else {
-            view?.textView2?.visibility = View.VISIBLE
-            view?.textView3?.visibility = View.VISIBLE
-            view?.button2?.visibility = View.VISIBLE
-            view?.textView4?.visibility = View.GONE
+            view?.role?.text = "NeOrg"
         }
     }
+
 }
