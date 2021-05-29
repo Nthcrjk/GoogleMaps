@@ -111,10 +111,11 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
         }
         var task: Task<Location> = fusedLocationProviderClient.lastLocation
         task.addOnSuccessListener {
-
+            Log.e("gaf", it.latitude.toString())
             if (it != null){
-                currentLocation = it
                 map?.isMyLocationEnabled = true
+                currentLocation = it
+                Log.e("gaf", currentLocation?.latitude.toString() + currentLocation?.longitude.toString())
                 currentLocation?.let { getDeviceLocation(it) }
             }
         }
