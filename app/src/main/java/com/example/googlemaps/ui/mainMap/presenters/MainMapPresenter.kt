@@ -2,6 +2,7 @@ package com.example.googlemaps.ui.mainMap.presenters
 
 
 import android.util.Log
+import com.example.googlemaps.common.BasePresenter
 import com.example.googlemaps.firebase.model.Date
 import com.example.googlemaps.firebase.model.RoadItem
 import com.example.googlemaps.firebase.model.Time
@@ -9,29 +10,30 @@ import com.example.googlemaps.firebase.model.User
 import com.example.googlemaps.ui.mainMap.view.MainMapView
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.Polyline
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import moxy.MvpPresenter
 import kotlin.collections.ArrayList
 
-class MainMapPresenter(): MvpPresenter<MainMapView>() {
-
-    private val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
-    val mAuthBase = FirebaseDatabase.getInstance().getReference("Users").child(mAuth.uid.toString())
+class MainMapPresenter(): BasePresenter<MainMapView>() {
 
     var markers: ArrayList<Marker> = ArrayList()
     var line: Polyline? = null
     val ROAD: String = "road"
+    var isOrg: String? = null
 
-    fun getUserStatus(){
+    override fun getUserStatus(){
+        Log.e("gaf", "2")
         val vListener = object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-
+                isOrg = snapshot.children.first().getValue(User::class.java)?.org
+                if (isOrg == "true"){
+                    viewState.showOrgButtons()
+                } else {
+                    viewState.showNotOrgButtons()
+                }
             }
-
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
             }

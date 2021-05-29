@@ -68,6 +68,7 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
                               savedInstanceState: Bundle?): View? {
         var view = inflater.inflate(R.layout.fragment_main_map, container, false)
 
+        Log.e("gaf", "1")
         presenter.getUserStatus()
 
         view.create_transit_button.setOnClickListener {

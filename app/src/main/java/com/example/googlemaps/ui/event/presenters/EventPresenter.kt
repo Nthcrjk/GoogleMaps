@@ -1,6 +1,7 @@
 package com.example.googlemaps.ui.event.presenters
 
 import android.util.Log
+import com.example.googlemaps.common.BasePresenter
 import com.example.googlemaps.firebase.model.RoadItem
 import com.example.googlemaps.firebase.model.User
 import com.example.googlemaps.ui.event.view.EventView
@@ -11,7 +12,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import moxy.MvpPresenter
 
-class EventPresenter: MvpPresenter<EventView>() {
+class EventPresenter: BasePresenter<EventView>() {
 
     val mDataBase = FirebaseDatabase.getInstance().getReference("road")
     val roadList: ArrayList<RoadItem> = ArrayList()
@@ -53,6 +54,10 @@ class EventPresenter: MvpPresenter<EventView>() {
             }
         }
         mDataBase.addValueEventListener(vListener)
+    }
+
+    override fun getUserStatus() {
+        TODO("Not yet implemented")
     }
 
 }
