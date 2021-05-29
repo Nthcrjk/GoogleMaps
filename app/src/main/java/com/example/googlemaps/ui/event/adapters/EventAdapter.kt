@@ -36,9 +36,6 @@ class EventAdapter(listener: EventAdapterListener, states: ArrayList<RoadItem>):
         holder.itemView.setOnClickListener {
             (context as BottomNavigationListener).selectTab(R.id.navigation_home, state)
         }
-        holder.deleteIcon.setOnClickListener {
-            listener.removeRoadFromDB()
-        }
     }
 
     override fun getItemCount(): Int {
@@ -47,6 +44,6 @@ class EventAdapter(listener: EventAdapterListener, states: ArrayList<RoadItem>):
 
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val nameOfEvent: TextView = itemView.event_name
-        val deleteIcon: ImageView = itemView.delete_icon
+
     }
 }

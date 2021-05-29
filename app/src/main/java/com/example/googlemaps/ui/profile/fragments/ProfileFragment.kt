@@ -44,7 +44,7 @@ class ProfileFragment : MvpAppCompatFragment(), ProfileView {
     override fun setUsersFields(user: User) {
         view?.name?.text = user.name
         view?.second_name?.text = user.secondName
-
+        view?.role?.text = user.org
     }
 
 }

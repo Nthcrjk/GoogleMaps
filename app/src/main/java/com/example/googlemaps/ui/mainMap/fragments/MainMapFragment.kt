@@ -1,6 +1,7 @@
 package com.example.googlemaps.ui.mainMap.fragments
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
@@ -22,12 +23,15 @@ import com.example.googlemaps.ui.mainMap.presenters.MainMapPresenter
 import com.example.googlemaps.ui.mainMap.view.BeautyTimePickerDialogListener
 import com.example.googlemaps.ui.mainMap.view.MainMapView
 import com.example.googlemaps.ui.mainMap.view.SaveRoadDialogListener
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.android.gms.tasks.Task
 import kotlinx.android.synthetic.main.fragment_main_map.view.*
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
@@ -43,6 +47,10 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
     private var locationPermissionGranted = false
     private var lastKnownLocation: Location? = null
     private var roadItem: RoadItem? = null
+    private var currentLocation: Location? = null
+    private lateinit var activityContext: Context
+
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     private var beautyListener = object : BeautyTimePickerDialogListener {
         override fun saveRoad(name: String, date: Date, time: Time) {
@@ -68,11 +76,16 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
                               savedInstanceState: Bundle?): View? {
         var view = inflater.inflate(R.layout.fragment_main_map, container, false)
 
-        Log.e("gaf", "1")
-        presenter.getUserStatus()
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activity)
+        activityContext = context!!
 
+        presenter.getUserStatus()
         view.create_transit_button.setOnClickListener {
             presenter.showPoly()
+        }
+
+        view.gps.setOnClickListener {
+            gaf()
         }
 
         view.save_transit_button.setOnClickListener {
@@ -87,6 +100,25 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
             .findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
         return view
+    }
+
+    fun gaf(){
+        if (ActivityCompat.checkSelfPermission(
+                        activityContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(activityContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(activity!!, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 101)
+            return
+        }
+        var task: Task<Location> = fusedLocationProviderClient.lastLocation
+        task.addOnSuccessListener {
+            if (it != null){
+                currentLocation = it
+                Log.e("gaf", currentLocation?.latitude.toString() + currentLocation?.longitude.toString())
+                map?.isMyLocationEnabled = true
+
+                currentLocation?.let { getDeviceLocation(it) }
+            }
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -161,11 +193,22 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
         }
     }
 
+    private fun getDeviceLocation(place: Location) {
+        try {
+            map?.moveCamera(
+                    CameraUpdateFactory
+                            .newLatLngZoom(LatLng(place.latitude, place.longitude), DEFAULT_ZOOM.toFloat()))
+            map?.uiSettings?.isMyLocationButtonEnabled = false
+        } catch (e: SecurityException) {
+            Log.e("Exception: %s", e.message, e)
+        }
+    }
+
     private fun getLocationPermission() {
         if (ContextCompat.checkSelfPermission((context as MainActivity).applicationContext,
                 Manifest.permission.ACCESS_FINE_LOCATION)
             == PackageManager.PERMISSION_GRANTED) {
-            locationPermissionGranted = true
+
         } else {
             ActivityCompat.requestPermissions(context as MainActivity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION)
@@ -226,5 +269,6 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
         presenter.line?.remove()
         presenter.line = null
     }
+
 
 }

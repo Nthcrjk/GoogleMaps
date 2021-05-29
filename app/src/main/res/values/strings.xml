@@ -3,4 +3,11 @@
     <string name="google_maps_key">AIzaSyAD7JHmomBkwJ3jlon3BYsf0PqbuTstmPE</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="teams">
+        <item>Азимут</item>
+        <item>СДЮШОР</item>
+        <item>Перевал</item>
+        <item>Береславка</item>
+        <item>Vento</item>
+    </string-array>
 </resources>
