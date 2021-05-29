@@ -1,6 +1,7 @@
 package com.example.googlemaps.ui.profile.presenters
 
 import android.util.Log
+import com.example.googlemaps.common.BasePresenter
 import com.example.googlemaps.firebase.model.User
 import com.example.googlemaps.ui.profile.view.ProfileView
 import com.google.firebase.auth.FirebaseAuth
@@ -10,10 +11,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import moxy.MvpPresenter
 
-class ProfilePresenter: MvpPresenter<ProfileView>() {
-
-    private val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
-    val mDataBase = FirebaseDatabase.getInstance().getReference("Users").child(mAuth.uid.toString())
+class ProfilePresenter: BasePresenter<ProfileView>() {
 
     private lateinit var mainUser: User
 
@@ -21,8 +19,7 @@ class ProfilePresenter: MvpPresenter<ProfileView>() {
         super.attachView(view)
     }
 
-    fun getDataFromDB(){
-        Log.e("gaf", "sdsdsd")
+    override fun getUserStatus() {
         val vListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 mainUser = snapshot.children.first().getValue(User::class.java)!!
@@ -33,6 +30,6 @@ class ProfilePresenter: MvpPresenter<ProfileView>() {
             }
 
         }
-        mDataBase.addValueEventListener(vListener)
+        mAuthBase.addValueEventListener(vListener)
     }
 }

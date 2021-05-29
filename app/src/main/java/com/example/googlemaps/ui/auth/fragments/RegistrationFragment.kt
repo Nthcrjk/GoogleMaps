@@ -41,7 +41,7 @@ class RegistrationFragment() : Fragment() {
                 mAuth.createUserWithEmailAndPassword(mail, password).addOnCompleteListener {
                     if (it.isSuccessful){
                         Toast.makeText(context, "Success!!!", Toast.LENGTH_SHORT).show()
-                        FirebaseDatabase.getInstance().getReference(USER).child(mAuth.uid.toString()).push().setValue(User(name, secondName, mail, password, isOrg))
+                        FirebaseDatabase.getInstance().getReference(USER).child(mAuth.uid.toString()).push().setValue(User(name, secondName, mail, password, isOrg.toString()))
                     }
                 }.addOnFailureListener {
                     Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()

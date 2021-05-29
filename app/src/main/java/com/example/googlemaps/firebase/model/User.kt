@@ -5,5 +5,5 @@ data class User(
     val secondName: String = "",
     val email: String = "",
     val password: String = "",
-    val isOrg: Boolean = false
+    val isOrg: String = ""
 )

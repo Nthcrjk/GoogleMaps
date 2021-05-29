@@ -11,5 +11,6 @@ interface MainMapView: MvpView {
     fun showPolyLines(list: ArrayList<Marker>)
     fun hidePolyLines()
     fun disableAllButtons()
-
+    fun showOrgButtons()
+    fun showNotOrgButtons()
 }

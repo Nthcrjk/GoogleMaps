@@ -68,6 +68,8 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
                               savedInstanceState: Bundle?): View? {
         var view = inflater.inflate(R.layout.fragment_main_map, container, false)
 
+        presenter.getUserStatus()
+
         view.create_transit_button.setOnClickListener {
             presenter.showPoly()
         }
@@ -100,6 +102,17 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
 
         view?.create_transit_button?.visibility = View.GONE
         view?.create_transit_button?.isEnabled = false
+    }
+
+    override fun showOrgButtons() {
+        view!!.gps.visibility = View.VISIBLE
+        view!!.users.visibility = View.VISIBLE
+        view!!.create_transit_button.visibility = View.VISIBLE
+        view!!.save_transit_button.visibility = View.VISIBLE
+    }
+
+    override fun showNotOrgButtons() {
+        view!!.gps.visibility = View.VISIBLE
     }
 
     override fun onMapReady(p0: GoogleMap) {

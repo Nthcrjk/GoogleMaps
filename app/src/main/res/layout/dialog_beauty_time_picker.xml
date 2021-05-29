@@ -6,19 +6,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <androidx.cardview.widget.CardView
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/colorPrimary"
+
         app:cardElevation="4dp"
-        app:cardCornerRadius="10dp"
+
+        app:cardCornerRadius="30dp"
         tools:ignore="MissingConstraints">
 
         <LinearLayout
-            android:paddingTop="15dp"
+
             android:paddingBottom="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,29 +30,51 @@
 
             <TimePicker
                 android:id="@+id/time_picker"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
+                android:layout_width="330dp"
+                android:layout_height="match_parent"
+                android:numbersSelectorColor="@color/b1"
+                android:numbersTextColor="@color/black">
 
             </TimePicker>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                >
+
+
 
                 <Button
                     android:id="@+id/cancel_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Отмена" />
+                    android:layout_width="128dp"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/my_buttons_2"
+                    android:backgroundTint="@color/white"
+                    android:text="отмена"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.492"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:backgroundTintMode="add"
+                     />
+
+
 
                 <Button
                     android:id="@+id/submit_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Сохранить" />
+                    android:layout_width="128dp"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/my_buttons_2"
+
+                    android:text="Сохранить"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.492"
+                    app:layout_constraintStart_toStartOf="parent"
+                     />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

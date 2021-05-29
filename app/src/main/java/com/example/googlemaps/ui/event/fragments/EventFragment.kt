@@ -16,15 +16,18 @@ import kotlinx.android.synthetic.main.fragment_event.view.*
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
-class EventFragment() : MvpAppCompatFragment(), EventView, EventAdapterListener {
+class EventFragment() : MvpAppCompatFragment(), EventView {
 
     private val presenter: EventPresenter by moxyPresenter { EventPresenter() }
-
     private lateinit var myContext: Context
-
     private lateinit var adapter: EventAdapter
     private lateinit var manager: LinearLayoutManager
 
+    private var eventAdapterListener = object : EventAdapterListener {
+        override fun removeRoadFromDB() {
+            presenter.removeRoadFromDB()
+        }
+    }
     override fun onAttach(context: Context) {
         super.onAttach(context)
         myContext = context
@@ -36,7 +39,7 @@ class EventFragment() : MvpAppCompatFragment(), EventView, EventAdapterListener 
 
         presenter.getDataFromDb()
         manager = LinearLayoutManager(myContext)
-        adapter = EventAdapter(this, presenter.roadList)
+        adapter = EventAdapter(eventAdapterListener, presenter.roadList)
 
         return view
     }

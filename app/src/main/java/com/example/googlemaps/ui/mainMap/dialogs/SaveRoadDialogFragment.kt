@@ -52,17 +52,6 @@ class SaveRoadDialogFragment(beautyListener: BeautyTimePickerDialogListener): Di
             } else {
                 Toast.makeText(context, "date or name is null or empty", Toast.LENGTH_LONG).show()
             }
-
-            /*
-            listener.saveRoad(view.road_name_edit_text.text.toString())
-            Toast.makeText(context, "Путь сохранен", Toast.LENGTH_LONG).show()
-            val calendar = Calendar.getInstance()
-            calendar.timeInMillis = view.calendar_view.date
-            val dateFromatter = DateFormat.getDateInstance(DateFormat.MEDIUM)
-
-            Log.e("gaf", dateFromatter.format(calendar.time))
-            dialog?.dismiss()
-             */
         }
 
         return view

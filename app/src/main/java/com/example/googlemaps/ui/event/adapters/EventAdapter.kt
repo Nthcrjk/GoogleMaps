@@ -1,6 +1,7 @@
 package com.example.googlemaps.ui.event.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,8 @@ class EventAdapter(listener: EventAdapterListener, states: ArrayList<RoadItem>):
         return ViewHolder(view)
     }
 
+
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val state = states[position]
         holder.nameOfEvent.text = state.name
@@ -34,7 +37,7 @@ class EventAdapter(listener: EventAdapterListener, states: ArrayList<RoadItem>):
             (context as BottomNavigationListener).selectTab(R.id.navigation_home, state)
         }
         holder.deleteIcon.setOnClickListener {
-
+            listener.removeRoadFromDB()
         }
     }
 

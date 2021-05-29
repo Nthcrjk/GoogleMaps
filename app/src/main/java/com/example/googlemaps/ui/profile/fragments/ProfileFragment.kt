@@ -35,7 +35,7 @@ class ProfileFragment : MvpAppCompatFragment(), ProfileView {
             startActivity(intent)
         }
 
-        presenter.getDataFromDB()
+        presenter.getUserStatus()
 
         return view
     }
@@ -45,11 +45,6 @@ class ProfileFragment : MvpAppCompatFragment(), ProfileView {
         view?.name?.text = user.name
         view?.second_name?.text = user.secondName
 
-        if (user.isOrg){
-            view?.role?.text = "Org"
-        } else {
-            view?.role?.text = "NeOrg"
-        }
     }
 
 }
