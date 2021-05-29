@@ -24,7 +24,6 @@ class MainMapPresenter(): BasePresenter<MainMapView>() {
     var isOrg: String? = null
 
     override fun getUserStatus(){
-        Log.e("gaf", "2")
         val vListener = object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 isOrg = snapshot.children.first().getValue(User::class.java)?.org

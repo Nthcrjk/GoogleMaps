@@ -111,11 +111,10 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
         }
         var task: Task<Location> = fusedLocationProviderClient.lastLocation
         task.addOnSuccessListener {
+
             if (it != null){
                 currentLocation = it
-                Log.e("gaf", currentLocation?.latitude.toString() + currentLocation?.longitude.toString())
                 map?.isMyLocationEnabled = true
-
                 currentLocation?.let { getDeviceLocation(it) }
             }
         }
@@ -150,6 +149,7 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
 
     override fun onMapReady(p0: GoogleMap) {
         this.map = p0
+
 
         map?.setOnMapClickListener {
             var marker = map?.addMarker(MarkerOptions().position(it))
@@ -208,7 +208,7 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
         if (ContextCompat.checkSelfPermission((context as MainActivity).applicationContext,
                 Manifest.permission.ACCESS_FINE_LOCATION)
             == PackageManager.PERMISSION_GRANTED) {
-
+            locationPermissionGranted = true
         } else {
             ActivityCompat.requestPermissions(context as MainActivity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION)
