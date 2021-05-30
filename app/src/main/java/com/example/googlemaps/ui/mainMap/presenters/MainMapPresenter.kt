@@ -25,10 +25,42 @@ class MainMapPresenter(): BasePresenter<MainMapView>() {
     var isOrg: String? = null
     var currentLocation: Location? = null
 
+    var roadItem: RoadItem? = null
+    var usersList: ArrayList<User> = ArrayList()
+
+    lateinit var mainUser: User
+
+    fun loadUseresFromRoad(roadItem: RoadItem){
+        FirebaseDatabase.getInstance().getReference("Users")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    snapshot.children.forEach {
+                        var user: User = User()
+                        it.children.forEach {
+                            user = it.getValue(User::class.java)!!
+                        }
+
+
+                        if (roadItem.usersUid.contains(it.key)) {
+                            usersList.add(user)
+                            viewState.setUsersAdapter()
+                            Log.e("sobjaka", "sdsd" + usersList.last().name)
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+    }
+
     override fun getUserStatus(){
         val vListener = object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                isOrg = snapshot.children.first().getValue(User::class.java)?.org
+                mainUser = snapshot.children.first().getValue(User::class.java)!!
+                isOrg = mainUser.org
                 if (isOrg == "true"){
                     viewState.showOrgButtons()
                 } else {
@@ -58,7 +90,6 @@ class MainMapPresenter(): BasePresenter<MainMapView>() {
                 override fun onCancelled(error: DatabaseError) {
                     TODO("Not yet implemented")
                 }
-
             })
     }
 

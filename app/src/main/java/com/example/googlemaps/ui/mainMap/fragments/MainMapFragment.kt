@@ -19,10 +19,12 @@ import com.example.googlemaps.firebase.model.Date
 import com.example.googlemaps.firebase.model.RoadItem
 import com.example.googlemaps.firebase.model.Time
 import com.example.googlemaps.ui.mainMap.dialogs.SaveRoadDialogFragment
+import com.example.googlemaps.ui.mainMap.dialogs.UsersOnWayDialogFragment
 import com.example.googlemaps.ui.mainMap.presenters.MainMapPresenter
 import com.example.googlemaps.ui.mainMap.view.BeautyTimePickerDialogListener
 import com.example.googlemaps.ui.mainMap.view.MainMapView
 import com.example.googlemaps.ui.mainMap.view.SaveRoadDialogListener
+import com.example.googlemaps.ui.mainMap.view.UsersOnWayAdapterListener
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 
@@ -46,14 +48,21 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
     private val defaultLocation = LatLng(44.41824719212245, 38.207623176276684)
     private var locationPermissionGranted = false
     private var lastKnownLocation: Location? = null
-    private var roadItem: RoadItem? = null
     private lateinit var activityContext: Context
+    var roadItem: RoadItem? = null
+    lateinit var usersDialog: UsersOnWayDialogFragment
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     private var beautyListener = object : BeautyTimePickerDialogListener {
         override fun saveRoad(name: String, date: Date, time: Time) {
             presenter.saveRoad(name, date, time)
+        }
+    }
+
+    private var usersListener = object : UsersOnWayAdapterListener {
+        override fun showUsersLocation(position: com.example.googlemaps.firebase.model.Marker) {
+            map?.addMarker(MarkerOptions().position(LatLng(position.point1, position.point2)))
         }
     }
 
@@ -65,6 +74,7 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        presenter.roadItem = roadItem
         if (savedInstanceState != null) {
             lastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION)
             cameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION)
@@ -79,8 +89,19 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
         activityContext = context!!
 
         presenter.getUserStatus()
+
+        if (presenter.roadItem != null) {
+            Log.e("sobjaka", "kowka")
+            presenter.loadUseresFromRoad(presenter.roadItem!!)
+        }
+
         view.create_transit_button.setOnClickListener {
             presenter.showPoly()
+        }
+
+
+        view.users.setOnClickListener {
+            usersDialog.show(childFragmentManager, UsersOnWayDialogFragment.TAG)
         }
 
         view.gps.setOnClickListener {
@@ -149,10 +170,12 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
         view!!.gps.visibility = View.VISIBLE
     }
 
+    override fun setUsersAdapter() {
+        usersDialog = UsersOnWayDialogFragment(presenter.usersList, usersListener)
+    }
+
     override fun onMapReady(p0: GoogleMap) {
         this.map = p0
-
-
 
         map?.setOnMapClickListener {
             var marker = map?.addMarker(MarkerOptions().position(it))
@@ -167,7 +190,6 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
             true
         }
 
-
         loadRoad()
 
         getLocationPermission()
@@ -176,8 +198,8 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
     }
 
     private fun loadRoad(){
-        if (roadItem != null) {
-            roadItem?.markerList?.forEach {
+        if (presenter.roadItem != null) {
+            presenter.roadItem?.markerList?.forEach {
                 var item = map?.addMarker(MarkerOptions().position(LatLng(it.point1, it.point2)))
                 presenter.markers.add(item!!)
             }

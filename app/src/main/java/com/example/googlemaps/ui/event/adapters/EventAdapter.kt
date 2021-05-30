@@ -28,8 +28,6 @@ class EventAdapter(listener: EventAdapterListener, states: ArrayList<RoadItem>):
         return ViewHolder(view)
     }
 
-
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val state = states[position]
         holder.nameOfEvent.text = state.name
