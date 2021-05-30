@@ -110,5 +110,8 @@ class MainMapPresenter(): BasePresenter<MainMapView>() {
         viewState.showPolyLines(markers)
     }
 
+    fun showGroupsBtn(){
+        viewState.showGroupsBtn()
+    }
 
 }

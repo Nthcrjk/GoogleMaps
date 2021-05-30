@@ -91,8 +91,8 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
         presenter.getUserStatus()
 
         if (presenter.roadItem != null) {
-            Log.e("sobjaka", "kowka")
             presenter.loadUseresFromRoad(presenter.roadItem!!)
+            presenter.showGroupsBtn()
         }
 
         view.create_transit_button.setOnClickListener {
@@ -161,7 +161,6 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
 
     override fun showOrgButtons() {
         view!!.gps.visibility = View.VISIBLE
-        view!!.users.visibility = View.VISIBLE
         view!!.create_transit_button.visibility = View.VISIBLE
         view!!.save_transit_button.visibility = View.VISIBLE
     }
@@ -172,6 +171,10 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
 
     override fun setUsersAdapter() {
         usersDialog = UsersOnWayDialogFragment(presenter.usersList, usersListener)
+    }
+
+    override fun showGroupsBtn() {
+        view!!.users.visibility = View.VISIBLE
     }
 
     override fun onMapReady(p0: GoogleMap) {
