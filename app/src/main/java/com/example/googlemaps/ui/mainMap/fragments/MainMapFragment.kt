@@ -47,7 +47,6 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
     private var locationPermissionGranted = false
     private var lastKnownLocation: Location? = null
     private var roadItem: RoadItem? = null
-    private var currentLocation: Location? = null
     private lateinit var activityContext: Context
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -115,9 +114,10 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
             Log.e("gaf", "meowmoew")
             if (it != null){
                 map?.isMyLocationEnabled = true
-                currentLocation = it
-                Log.e("gaf", currentLocation?.latitude.toString() + currentLocation?.longitude.toString())
-                currentLocation?.let { getDeviceLocation(it) }
+                presenter.currentLocation = it
+                Log.e("gaf", presenter.currentLocation?.latitude.toString() + presenter.currentLocation?.longitude.toString())
+                presenter.currentLocation?.let { getDeviceLocation(it) }
+                presenter.addCurrentLocation()
             }
         }
     }

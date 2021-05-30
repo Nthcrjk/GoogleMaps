@@ -27,6 +27,10 @@ class EventFragment() : MvpAppCompatFragment(), EventView {
         override fun removeRoadFromDB() {
             presenter.removeRoadFromDB()
         }
+
+        override fun addUserToRoad(roadId: String) {
+            presenter.addUserToRoad(roadId)
+        }
     }
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -37,7 +41,7 @@ class EventFragment() : MvpAppCompatFragment(), EventView {
                               savedInstanceState: Bundle?): View? {
         val view =  inflater.inflate(R.layout.fragment_event, container, false)
 
-        presenter.getDataFromDb()
+        presenter.getUserStatus()
         manager = LinearLayoutManager(myContext)
         adapter = EventAdapter(eventAdapterListener, presenter.roadList)
 

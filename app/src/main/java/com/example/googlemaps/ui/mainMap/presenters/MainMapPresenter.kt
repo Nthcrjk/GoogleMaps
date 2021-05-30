@@ -1,6 +1,7 @@
 package com.example.googlemaps.ui.mainMap.presenters
 
 
+import android.location.Location
 import android.util.Log
 import com.example.googlemaps.common.BasePresenter
 import com.example.googlemaps.firebase.model.Date
@@ -22,6 +23,7 @@ class MainMapPresenter(): BasePresenter<MainMapView>() {
     var line: Polyline? = null
     val ROAD: String = "road"
     var isOrg: String? = null
+    var currentLocation: Location? = null
 
     override fun getUserStatus(){
         val vListener = object: ValueEventListener{
@@ -42,6 +44,22 @@ class MainMapPresenter(): BasePresenter<MainMapView>() {
 
     override fun attachView(view: MainMapView?) {
         super.attachView(view)
+    }
+
+    fun addCurrentLocation(){
+        FirebaseDatabase.getInstance().getReference("Users").child(mAuth.uid!!)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    var user: User = snapshot.children.first().getValue(User::class.java)!!
+                    user.currentLocation = com.example.googlemaps.firebase.model.Marker(currentLocation!!.latitude, currentLocation!!.longitude)
+                    mAuthBase.child(snapshot.children.first().key!!).setValue(user)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
     }
 
     fun saveRoad(roadName: String, date: Date, time: Time){

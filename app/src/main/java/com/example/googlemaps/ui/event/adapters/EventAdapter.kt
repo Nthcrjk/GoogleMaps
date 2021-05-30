@@ -36,6 +36,9 @@ class EventAdapter(listener: EventAdapterListener, states: ArrayList<RoadItem>):
         holder.itemView.setOnClickListener {
             (context as BottomNavigationListener).selectTab(R.id.navigation_home, state)
         }
+        holder.itemView.button2.setOnClickListener {
+            listener.addUserToRoad(state.roadsUid)
+        }
     }
 
     override fun getItemCount(): Int {

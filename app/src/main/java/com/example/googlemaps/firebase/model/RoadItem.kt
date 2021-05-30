@@ -6,7 +6,9 @@ data class RoadItem(
     var name: String = "",
     var markerList: ArrayList<Marker> = ArrayList(),
     var date: Date = Date(),
-    var time: Time = Time()
+    var time: Time = Time(),
+    var usersUid: ArrayList<String> = ArrayList() ,
+    var roadsUid: String = ""
 )
 
 data class Marker(
