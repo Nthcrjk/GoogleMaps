@@ -85,6 +85,7 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
         }
 
         view.gps.setOnClickListener {
+            Log.e("gaf", "kowka")
             gaf()
         }
 
@@ -111,7 +112,7 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
         }
         var task: Task<Location> = fusedLocationProviderClient.lastLocation
         task.addOnSuccessListener {
-            Log.e("gaf", it.latitude.toString())
+            Log.e("gaf", "meowmoew")
             if (it != null){
                 map?.isMyLocationEnabled = true
                 currentLocation = it
@@ -150,6 +151,7 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
 
     override fun onMapReady(p0: GoogleMap) {
         this.map = p0
+
 
 
         map?.setOnMapClickListener {
