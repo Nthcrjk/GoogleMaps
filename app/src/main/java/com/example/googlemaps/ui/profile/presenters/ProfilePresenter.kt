@@ -19,8 +19,6 @@ class ProfilePresenter: BasePresenter<ProfileView>() {
         super.attachView(view)
     }
 
-
-
     fun saveTeams(team: String){
         mAuthBase.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -42,6 +40,7 @@ class ProfilePresenter: BasePresenter<ProfileView>() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 mainUser = snapshot.children.first().getValue(User::class.java)!!
                 viewState.setUsersFields(mainUser)
+                viewState.setTeam(mainUser.usersTeam)
             }
             override fun onCancelled(error: DatabaseError) {
 
@@ -50,4 +49,5 @@ class ProfilePresenter: BasePresenter<ProfileView>() {
         }
         mAuthBase.addValueEventListener(vListener)
     }
+
 }

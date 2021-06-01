@@ -52,4 +52,8 @@ class ProfileFragment : MvpAppCompatFragment(), ProfileView {
         view?.role?.text = user.org
     }
 
+    override fun setTeam(team: String) {
+        view?.textView4?.text = team
+    }
+
 }

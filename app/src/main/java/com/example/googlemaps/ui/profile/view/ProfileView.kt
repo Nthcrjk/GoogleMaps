@@ -7,4 +7,5 @@ import moxy.viewstate.strategy.alias.AddToEndSingle
 @AddToEndSingle
 interface ProfileView: MvpView{
     fun setUsersFields(user: User)
+    fun setTeam(team: String)
 }
