@@ -19,6 +19,24 @@ class ProfilePresenter: BasePresenter<ProfileView>() {
         super.attachView(view)
     }
 
+
+
+    fun saveTeams(team: String){
+        mAuthBase.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var user = snapshot.children.first().getValue(User::class.java)!!
+                user.usersTeam = team
+                mAuthBase.child(snapshot.children.first().key!!).setValue(user)
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
+    }
+
     override fun getUserStatus() {
         val vListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {

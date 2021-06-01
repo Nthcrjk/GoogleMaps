@@ -28,6 +28,8 @@ class UsersOnWayAdapter(var users: ArrayList<User>, var listener: UsersOnWayAdap
         holder.nameTextView.text = state.name
         holder.secondNameTextView.text = state.secondName
 
+        holder.itemView.team_tv.text = state.usersTeam
+
         holder.itemView.user_view.setOnClickListener {
             listener.showUsersLocation(state.currentLocation)
             dialog.dismiss()

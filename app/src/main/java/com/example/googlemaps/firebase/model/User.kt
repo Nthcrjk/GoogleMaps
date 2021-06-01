@@ -7,5 +7,6 @@ data class User(
     val password: String = "",
     val org: String = "",
     var currentLocation: Marker = Marker(),
-    var userUID: String = ""
+    var userUID: String = "",
+    var usersTeam: String = ""
 )

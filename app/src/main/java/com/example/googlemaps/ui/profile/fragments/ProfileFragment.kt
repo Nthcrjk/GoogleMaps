@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.view.get
 import com.example.googlemaps.R
 import com.example.googlemaps.firebase.model.User
 import com.example.googlemaps.ui.auth.activity.AuthActivity
@@ -33,6 +35,9 @@ class ProfileFragment : MvpAppCompatFragment(), ProfileView {
             FirebaseAuth.getInstance().signOut()
             val intent: Intent = Intent((context as MainActivity), AuthActivity::class.java)
             startActivity(intent)
+        }
+        view.save_button.setOnClickListener {
+            presenter.saveTeams((view.spinner.get(0) as TextView).text.toString())
         }
 
         presenter.getUserStatus()

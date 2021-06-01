@@ -25,6 +25,14 @@
         android:background="@drawable/back"
 
         android:text="Имя" />
+    <TextView
+        android:id="@+id/team_tv"
+        android:layout_marginLeft="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/back"
+
+        android:text="ком" />
 
 
 </LinearLayout>
