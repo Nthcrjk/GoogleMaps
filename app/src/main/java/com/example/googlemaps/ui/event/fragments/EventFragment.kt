@@ -31,6 +31,10 @@ class EventFragment() : MvpAppCompatFragment(), EventView {
         override fun addUserToRoad(roadId: String) {
             presenter.addUserToRoad(roadId)
         }
+
+        override fun unsubscribeUserFromRoad(userUid: String, roadId: String) {
+            presenter.unsubscribeUserFromRoad(userUid, roadId)
+        }
     }
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -40,15 +44,14 @@ class EventFragment() : MvpAppCompatFragment(), EventView {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view =  inflater.inflate(R.layout.fragment_event, container, false)
-
         presenter.getUserStatus()
-        manager = LinearLayoutManager(myContext)
-        adapter = EventAdapter(eventAdapterListener, presenter.roadList)
 
         return view
     }
 
     override fun setAdapter() {
+        manager = LinearLayoutManager(myContext)
+        adapter = EventAdapter(eventAdapterListener, presenter.roadList, presenter.mainUser)
         view?.road_list?.layoutManager = manager
         view?.road_list?.adapter = adapter
     }

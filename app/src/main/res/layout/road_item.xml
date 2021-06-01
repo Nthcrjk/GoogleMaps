@@ -67,15 +67,30 @@
         app:layout_constraintTop_toBottomOf="@+id/event_name" />
 
     <Button
-        android:id="@+id/button2"
+    android:id="@+id/button2"
+    android:layout_width="146dp"
+    android:layout_height="37dp"
+
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="12dp"
+    android:background="@drawable/my_buttons"
+    android:text="Присоедениться"
+    android:textSize="10dp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/date"
+    android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/button3"
         android:layout_width="146dp"
         android:layout_height="37dp"
 
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="4dp"
         android:background="@drawable/my_buttons"
-        android:text="Присоедениться"
+        android:text="Отписаться"
         android:textSize="10dp"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/date" />
 

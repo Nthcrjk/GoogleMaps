@@ -13,12 +13,34 @@ class EventPresenter: BasePresenter<EventView>() {
 
     val mDataBase = FirebaseDatabase.getInstance().getReference("road")
     val roadList: ArrayList<RoadItem> = ArrayList()
-    private lateinit var mainUser: User
+    lateinit var mainUser: User
     var isOrg: Boolean = false
 
 
     override fun attachView(view: EventView?) {
         super.attachView(view)
+    }
+
+    fun unsubscribeUserFromRoad(userUid: String, roadId: String){
+        FirebaseDatabase.getInstance().getReference("road").child(roadId)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        var road: RoadItem = snapshot.getValue(RoadItem::class.java)!!
+
+                        road.usersUid.forEachIndexed { index, s ->
+                            if (s.contains(userUid)){
+                                FirebaseDatabase.getInstance().getReference("road")
+                                        .child(roadId).child("usersUid").child(index.toString())
+                                        .removeValue()
+                            }
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        TODO("Not yet implemented")
+                    }
+
+                })
     }
 
     fun addUserToRoad(roadsUid: String){
@@ -74,6 +96,7 @@ class EventPresenter: BasePresenter<EventView>() {
         val vListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 mainUser = snapshot.children.first().getValue(User::class.java)!!
+                mainUser.userUID = mAuth.uid.toString()
                 getDataFromDb()
             }
             override fun onCancelled(error: DatabaseError) {

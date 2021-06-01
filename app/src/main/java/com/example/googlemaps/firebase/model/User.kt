@@ -6,5 +6,6 @@ data class User(
     val email: String = "",
     val password: String = "",
     val org: String = "",
-    var currentLocation: Marker = Marker()
+    var currentLocation: Marker = Marker(),
+    var userUID: String = ""
 )
