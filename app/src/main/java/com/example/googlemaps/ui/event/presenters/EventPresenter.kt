@@ -37,10 +37,10 @@ class EventPresenter: BasePresenter<EventView>() {
         })
     }
 
-    fun removeRoadFromDB(){
+    fun removeRoadFromDB(roadId: String){
         val vListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-
+                mDataBase.child(roadId).removeValue()
             }
 
             override fun onCancelled(error: DatabaseError) {

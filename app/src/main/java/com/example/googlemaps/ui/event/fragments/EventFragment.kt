@@ -24,8 +24,8 @@ class EventFragment() : MvpAppCompatFragment(), EventView {
     private lateinit var manager: LinearLayoutManager
 
     private var eventAdapterListener = object : EventAdapterListener {
-        override fun removeRoadFromDB() {
-            presenter.removeRoadFromDB()
+        override fun removeRoadFromDB(roadId: String) {
+            presenter.removeRoadFromDB(roadId)
         }
 
         override fun addUserToRoad(roadId: String) {

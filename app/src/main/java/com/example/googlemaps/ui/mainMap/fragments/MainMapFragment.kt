@@ -63,6 +63,7 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
     private var usersListener = object : UsersOnWayAdapterListener {
         override fun showUsersLocation(position: com.example.googlemaps.firebase.model.Marker) {
             map?.addMarker(MarkerOptions().position(LatLng(position.point1, position.point2)))
+            //map?.addCircle(CircleOptions().center(LatLng(position.point1, position.point2)).radius(1000.0))
         }
     }
 
@@ -93,6 +94,9 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
         if (presenter.roadItem != null) {
             presenter.loadUseresFromRoad(presenter.roadItem!!)
             presenter.showGroupsBtn()
+            if (roadItem?.usersUid?.size == 0){
+                presenter.hideGroupsBtn()
+            }
         }
 
         view.create_transit_button.setOnClickListener {
@@ -105,7 +109,6 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
         }
 
         view.gps.setOnClickListener {
-            Log.e("gaf", "kowka")
             gaf()
         }
 
@@ -131,8 +134,8 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
             return
         }
         var task: Task<Location> = fusedLocationProviderClient.lastLocation
+
         task.addOnSuccessListener {
-            Log.e("gaf", "meowmoew")
             if (it != null){
                 map?.isMyLocationEnabled = true
                 presenter.currentLocation = it
@@ -177,6 +180,20 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
         view!!.users.visibility = View.VISIBLE
     }
 
+    override fun hideGroupsBtn() {
+        view!!.users.visibility = View.GONE
+    }
+
+    override fun disableMarkers() {
+        map?.setOnMarkerClickListener {
+            true
+        }
+        map?.setOnMapClickListener {
+
+        }
+
+    }
+
     override fun onMapReady(p0: GoogleMap) {
         this.map = p0
 
@@ -192,12 +209,16 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
             presenter.hidePoly()
             true
         }
-
         loadRoad()
 
         getLocationPermission()
         updateLocationUI()
         getDeviceLocation()
+
+        if (presenter.roadItem != null) {
+            getDeviceLocation(roadItem?.markerList?.first()?.point1!!, roadItem?.markerList?.first()?.point2!!)
+            presenter.disableMarkers()
+        }
     }
 
     private fun loadRoad(){
@@ -226,6 +247,18 @@ class MainMapFragment constructor() : MvpAppCompatFragment(), OnMapReadyCallback
             map?.moveCamera(
                     CameraUpdateFactory
                             .newLatLngZoom(LatLng(place.latitude, place.longitude), DEFAULT_ZOOM.toFloat()))
+            map?.uiSettings?.isMyLocationButtonEnabled = false
+            Log.e("gaf", "meow3")
+        } catch (e: SecurityException) {
+            Log.e("Exception: %s", e.message, e)
+        }
+    }
+
+    private fun getDeviceLocation(latitude: Double, longitude: Double) {
+        try {
+            map?.moveCamera(
+                    CameraUpdateFactory
+                            .newLatLngZoom(LatLng(latitude, longitude), DEFAULT_ZOOM.toFloat()))
             map?.uiSettings?.isMyLocationButtonEnabled = false
         } catch (e: SecurityException) {
             Log.e("Exception: %s", e.message, e)

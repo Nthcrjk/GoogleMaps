@@ -15,4 +15,6 @@ interface MainMapView: MvpView {
     fun showNotOrgButtons()
     fun setUsersAdapter()
     fun showGroupsBtn()
+    fun hideGroupsBtn()
+    fun disableMarkers()
 }

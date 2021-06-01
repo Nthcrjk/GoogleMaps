@@ -36,6 +36,13 @@ class EventAdapter(listener: EventAdapterListener, states: ArrayList<RoadItem>):
         }
         holder.itemView.button2.setOnClickListener {
             listener.addUserToRoad(state.roadsUid)
+            states.clear()
+            notifyDataSetChanged()
+        }
+        holder.itemView.delete_icon.setOnClickListener {
+            listener.removeRoadFromDB(state.roadsUid)
+            states.clear()
+            notifyDataSetChanged()
         }
     }
 

@@ -65,6 +65,7 @@ class MainMapPresenter(): BasePresenter<MainMapView>() {
                     viewState.showOrgButtons()
                 } else {
                     viewState.showNotOrgButtons()
+                    viewState.disableMarkers()
                 }
             }
             override fun onCancelled(error: DatabaseError) {
@@ -102,6 +103,10 @@ class MainMapPresenter(): BasePresenter<MainMapView>() {
         FirebaseDatabase.getInstance().getReference(ROAD).push().setValue(item)
     }
 
+    fun disableMarkers(){
+        viewState.disableMarkers()
+    }
+
     fun hidePoly(){
         viewState.hidePolyLines()
     }
@@ -112,6 +117,10 @@ class MainMapPresenter(): BasePresenter<MainMapView>() {
 
     fun showGroupsBtn(){
         viewState.showGroupsBtn()
+    }
+
+    fun hideGroupsBtn(){
+        viewState.hideGroupsBtn()
     }
 
 }
